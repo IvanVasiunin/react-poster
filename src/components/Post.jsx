@@ -1,11 +1,13 @@
+import { Link } from 'react-router-dom';
 import classes from './Post.module.css';
 
-export default function Post(props) {
-
+export default function Post({id, author, body}) {
   return (
     <li className={classes.post}>
-      <p className={classes.author}>{props.author}</p>
-      <p className={classes.text}>{props.body}</p>
+      <Link to={id}>
+        <p className={classes.author}>{author}</p>
+        <p className={classes.text}>{body}</p>
+      </Link>
     </li>
   );
 }

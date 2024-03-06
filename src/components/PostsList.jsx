@@ -1,41 +1,30 @@
-import { useState } from 'react';
-import NewPost from './NewPost';
-import Modal from './Modal';
 import Post from './Post';
 import calsses from './Posts.module.css';
+import { useLoaderData } from 'react-router-dom';
 
-const DUMMY_DATA = [
-  { author: 'Max', body: 'React.JS is awesome' },
-  { author: 'Leo', body: 'Check out th full course' },
-];
-
-export default function PostsList({onStopPosting, isPosting}) {
-  const [enteredBody, setEnteredBody] = useState('');
-  const [enteredAuthor, setEnterdAuthor] = useState('');
-
-  function changeBodyHandler(event) {
-    setEnteredBody(event.target.value);
-  }
-
-  function changeAuthorHandler(event) {
-    setEnterdAuthor(event.target.value);
-  }
+export default function PostsList() {
+  const posts = useLoaderData();
 
   return (
     <>
-      {isPosting && (
-        <Modal onClose={onStopPosting}>
-          <NewPost
-            onBodyChange={changeBodyHandler}
-            onAuthorChange={changeAuthorHandler}
-          />
-        </Modal>
+      {posts.length > 0 && (
+        <ul className={calsses.posts}>
+          {posts.map(post => (
+            <Post
+              key={post.id}
+              id={post.id}
+              author={post.author}
+              body={post.body}
+            />
+          ))}
+        </ul>
       )}
-      <ul className={calsses.posts}>
-        {DUMMY_DATA.map(item => (
-          <Post key={item.body} author={item.author} body={item.body} />
-        ))}
-      </ul>
+      {posts.length === 0 && (
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <h2>There are no posts yet.</h2>
+          <p>Start adding some!</p>
+        </div>
+      )}
     </>
   );
 }
